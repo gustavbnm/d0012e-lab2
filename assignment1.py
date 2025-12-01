@@ -10,7 +10,8 @@ def main():
         #print(b[i])
         print(a[i])
     test = worst_case_three(a,0,0,0)
-    test2 = array_sorter(a)
+    #test2 = array_sorter(a)
+    test3 = z_finder(a, 0)
 
 # ===========================================
 #               For O(n³)-time
@@ -42,6 +43,39 @@ def worst_case_three(arr: array, i, j, k):
 
 # ===========================================
 #               For O(n²)-time
+# ===========================================
+
+def z_finder(arr: array, z):
+    if z >= len(arr):
+        print("No solution found")
+        return False
+    # Call hasher with the target value, aka z
+    if hasher(arr[z], arr, 0, {}):
+        return True
+    # If there is no solution for z, recursively call z_finder
+    # with the next value for z
+    return z_finder(arr, z+1)
+
+
+def hasher(target: int, arr: array, i, hashmap):
+    if i >= len(arr):
+        return False
+
+    # We are looking for a value x that matches x + y = z
+    # x must be (target - arr[i])
+    complement = target - arr[i]
+    # Check if the compliment has been computed/ stored in a previous iteration
+    if complement in hashmap:
+        print(complement, "+", arr[i], "=", target)
+        return True
+    # If not, store current value for future iterations and recursively call hasher
+    # for every value i to the length of the array
+    hashmap[arr[i]]=i
+    return hasher(target, arr, i+1, hashmap)
+
+
+# ===========================================
+#              "Illegal Solution"
 # ===========================================
 def array_sorter(arr: array):
     # Sorting the array, O(n*log(n))
